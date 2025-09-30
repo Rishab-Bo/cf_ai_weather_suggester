@@ -1,9 +1,8 @@
 {
   "name": "weather-suggester-worker",
   "main": "src/index.js",
-  "compatibility_date": "2025-09-30", // Or whatever date was already in your file
+  "compatibility_date": "2025-09-30",
 
-  // This is the KV namespace binding for caching
   "kv_namespaces": [
     {
       "binding": "WEATHER_CACHE",
@@ -11,7 +10,6 @@
     }
   ],
 
-  // This is the binding for the AI model
   "ai": {
     "binding": "AI"
   }

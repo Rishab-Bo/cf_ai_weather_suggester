@@ -27,7 +27,7 @@
             const responseDiv = document.getElementById('response');
             responseDiv.innerHTML = '<p>Loading...</p>';
             try {
-                const response = await fetch('https://rishab-dev.workers.dev', { // This URL will be replaced
+                const response = await fetch('https://weather-suggester-worker.rishab-dev.workers.dev', { // This URL will be replaced
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ location }),

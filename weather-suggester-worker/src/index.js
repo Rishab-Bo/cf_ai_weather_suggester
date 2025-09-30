@@ -7,13 +7,11 @@ export default {
       'Access-Control-Allow-Headers': 'Content-Type',
     });
 
-    // THIS IS THE CRITICAL PART FOR YOUR ERROR.
-    // It handles the browser's preflight "OPTIONS" request.
+    // Handles the browser's preflight "OPTIONS" request.
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers });
     }
 
-    // The rest of your code handles the actual "POST" request.
     if (request.method !== 'POST') {
       return new Response('Please send a POST request', { status: 405, headers });
     }
@@ -34,13 +32,15 @@ export default {
         await env.WEATHER_CACHE.put(cacheKey, JSON.stringify(weatherData), { expirationTtl: 3600 });
       }
 
-      const { Ai } = await import('@cloudflare/ai');
-      const ai = new Ai(env.AI);
+      // THIS IS THE CORRECTED SECTION
       const messages = [
         { role: 'system', content: 'You are a friendly assistant that suggests 3-5 fun, creative activities based on the weather. Format your response as a simple list.' },
         { role: 'user', content: `The current weather in ${location} is ${weatherData.current_condition[0].weatherDesc[0].value}. What are some fun activities I can do?` }
       ];
-      const aiResponse = await ai.run('@cf/meta/llama-3-8b-instruct', { messages });
+
+      // We now call env.AI directly. We do not import anything.
+      const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', { messages });
+      // END OF CORRECTED SECTION
 
       const responsePayload = JSON.stringify({ weather: weatherData, activities: aiResponse });
       headers.set('Content-Type', 'application/json');
